@@ -55,12 +55,11 @@ jobs:
         with:
           report_paths: '**/build/test-results/**/TEST-*.xml'
 
-      - name: Quality Gate
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew --no-daemon --stacktrace multiplatformCoverageVerification jvmCoverage sonarqube --info
+      #- name: Quality Gate
+      #  env:
+      #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #  run: ./gradlew --no-daemon --stacktrace multiplatformCoverageVerification jvmCoverage sonarqube --info
 
-      - name: Publish to Development Repository
-        run: ./gradlew publishDevelopment --stacktrace --no-parallel
-
+      # - name: Publish to Development Repository
+      #  run: ./gradlew publishDevelopment --stacktrace --no-parallel
