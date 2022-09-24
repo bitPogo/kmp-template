@@ -39,7 +39,7 @@ import tech.antibytes.util.test.mustBe
 @Mock(
     SampleRemoteRepository::class,
     SampleLocalRepository::class,
-    SampleDomainObject::class
+    SampleDomainObject::class,
 )
 class SampleControllerAutoStubSpec {
     private val fixture = kotlinFixture()

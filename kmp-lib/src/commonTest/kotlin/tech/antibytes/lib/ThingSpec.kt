@@ -1,8 +1,8 @@
 package tech.antibytes.lib
 
-import tech.antibytes.util.test.fulfils
 import kotlin.js.JsName
 import kotlin.test.Test
+import tech.antibytes.util.test.fulfils
 
 class ThingSpec {
     @Test
