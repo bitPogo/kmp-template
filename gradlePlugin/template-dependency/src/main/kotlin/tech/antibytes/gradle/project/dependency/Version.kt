@@ -27,7 +27,7 @@ object Version {
 
     object Antibytes {
         const val test = "9401af5"
-        const val kfixture = "0.3.1"
+        const val kfixture = "0.4.0"
         const val kmock = "0.3.0-rc04"
     }
 

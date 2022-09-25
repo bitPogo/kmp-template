@@ -62,18 +62,10 @@
   color: f5ad42
 
 # Library
-- name: kmock-gradle
-  description: KMock Gradle Plugin
+- name: example-android-application
+  description: Example Application
   color: 000080
 
-- name: kmock-processor
-  description: Stubgenerator
-  color: 000080
-
-- name: kmock
-  description: KMock
-  color: 000080
-
-- name: examples
-  description: Examples
+- name: kmp-lib
+  description: Example Library
   color: 000080

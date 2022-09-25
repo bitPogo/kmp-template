@@ -26,6 +26,8 @@ kmock {
 }
 
 android {
+    namespace = "tech.antibytes.project.example"
+
     defaultConfig {
         applicationId = "tech.antibytes.project.example.app"
         versionCode = 1
