@@ -193,6 +193,8 @@ kotlin {
 }
 
 android {
+    namespace = "tech.antibytes.lib"
+
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
