@@ -3,16 +3,11 @@
  *
  * Use of this source code is governed by Apache v2.0
  */
-import tech.antibytes.gradle.dependency.settings.localGithub
-
-enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
-
 pluginManagement {
     repositories {
         val antibytesPlugins = "^tech\\.antibytes\\.[\\.a-z\\-]+"
         gradlePluginPortal()
         google()
-        mavenCentral()
         maven {
             setUrl("https://raw.github.com/bitPogo/maven-snapshots/main/snapshots")
             content {
@@ -31,17 +26,3 @@ pluginManagement {
 plugins {
     id("tech.antibytes.gradle.dependency.settings") version "022f831"
 }
-
-includeBuild("setup")
-includeBuild("gradlePlugin/template-dependency")
-
-include(
-    ":kmp-lib",
-    ":example-android-application"
-)
-
-buildCache {
-    localGithub()
-}
-
-rootProject.name = "template-project"
