@@ -5,19 +5,27 @@
  */
 
 import tech.antibytes.gradle.dependency.Dependency
+import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
 import tech.antibytes.gradle.configuration.isIdea
-import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
 import tech.antibytes.gradle.project.dependency.Dependency as LocalDependency
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
+    alias(antibytesCatalog.plugins.gradle.antibytes.androidLibraryConfiguration)
+    alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 
-    // Android
-    id("com.android.library")
+    alias(libs.plugins.kmock)
+}
 
-    id("tech.antibytes.gradle.configuration")
-    id("tech.antibytes.gradle.coverage")
+android {
+    namespace = "tech.antibytes.lib"
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 kotlin {
@@ -48,7 +56,7 @@ kotlin {
 
     ios()
     iosSimulatorArm64()
-    ensureIosDeviceCompatibility()
+    ensureAppleDeviceCompatibility()
 
     linuxX64()
 
@@ -188,16 +196,6 @@ kotlin {
         }
         val iosSimulatorArm64Test by getting {
             dependsOn(iosTest)
-        }
-    }
-}
-
-android {
-    namespace = "tech.antibytes.lib"
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
         }
     }
 }

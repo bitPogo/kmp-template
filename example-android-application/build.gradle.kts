@@ -9,16 +9,12 @@ import tech.antibytes.gradle.project.dependency.Dependency as LocalDependency
 import tech.antibytes.gradle.dependency.Version
 
 plugins {
-    id("org.jetbrains.kotlin.android")
+    id(antibytesCatalog.plugins.kotlin.android.get().pluginId)
 
-    // Android
-    id("com.android.application")
+    alias(antibytesCatalog.plugins.gradle.antibytes.androidApplicationConfiguration)
+    alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 
-    // Contains the major part of the Android Setup
-    id("tech.antibytes.gradle.configuration")
-    id("tech.antibytes.gradle.coverage")
-
-    id("tech.antibytes.kmock.kmock-gradle")
+    alias(libs.plugins.kmock)
 }
 
 kmock {

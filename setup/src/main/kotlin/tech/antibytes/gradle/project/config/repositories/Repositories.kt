@@ -16,7 +16,7 @@ private val githubGroups = listOf(
 )
 
 object Repositories {
-    val kmockRepositories = listOf(
+    val projectRepositories = listOf(
         AntibytesRepository(
             AntibytesUrl.DEV,
             githubGroups,
