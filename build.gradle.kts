@@ -3,10 +3,6 @@ import tech.antibytes.gradle.dependency.helper.addCustomRepositories
 import tech.antibytes.gradle.dependency.helper.ensureKotlinVersion
 
 plugins {
-    id("tech.antibytes.gradle.project.dependency")
-
-    id("tech.antibytes.gradle.dependency")
-
     id("tech.antibytes.gradle.setup")
 
     alias(antibytesCatalog.plugins.gradle.antibytes.dependencyHelper)
@@ -25,7 +21,7 @@ allprojects {
         addCustomRepositories(projectRepositories)
     }
 
-    // ensureKotlinVersion(antibytesCatalog.versions.kotlin.language.get())
+    ensureKotlinVersion()
 }
 
 tasks.named<Wrapper>("wrapper") {
