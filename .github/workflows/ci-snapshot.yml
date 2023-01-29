@@ -1,16 +1,15 @@
-name: Antibytes CI - Pull-Request Validation
+name: Antibytes CI - Latest Version
 
 on:
-  pull_request:
-    types: [opened, synchronize, edited, reopened]
+  push:
     branches:
       - main
-      - feature/*
       - release/*
-      - core/*
-      - plugin/*
-      - bugfix/*
   workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
 
 jobs:
   build-linux:
@@ -33,12 +32,12 @@ jobs:
     #  detekt: true
     #  api-check: true
     concurrency:
-      group: coding-conventions-${{ github.workflow }}-${{ github.head_ref }}
+      group: coding-conventions
       cancel-in-progress: true
 
   check-android:
     needs: build-linux
-    uses: bitpogo/workflows/.github/workflows/shared-test-android-linux.yml@main
+    uses: bitpogo/workflows/.github/workflows/shared-test-android-linux.yml@v1.0.0
     with:
       projects: "[':example-android-application']"
       api-level: "['31']"
@@ -46,7 +45,7 @@ jobs:
       coverage: true
       cache-reports: true
     concurrency:
-      group: check-android-${{ github.workflow }}-${{ github.head_ref }}
+      group: check-android
       cancel-in-progress: true
 
   coverage:
@@ -61,7 +60,7 @@ jobs:
       github-token: ${{ secrets.GITHUB_TOKEN }}
     #  sonar-token: ${{ secrets.SONAR_TOKEN }}
     concurrency:
-      group: coverage-${{ github.workflow }}-${{ github.head_ref }}
+      group: coverage
       cancel-in-progress: true
 
   check:
@@ -70,12 +69,21 @@ jobs:
     with:
       platforms: "['ios', 'macos', 'tvos', 'watchos', 'linux-js', 'mingw']"
     concurrency:
-      group: check-${{ github.workflow }}-${{ github.head_ref }}
+      group: check
       cancel-in-progress: true
+
+  # docs:
+  #  needs: [ coverage, check ]
+  #  uses: bitpogo/workflows/.github/workflows/shared-mkdocs-snapshot.yml@v1.0.0
+  #  secrets:
+  #    github-token: ${{ secrets.GITHUB_TOKEN }}
+  #  concurrency:
+  #    group: docs
+  #    cancel-in-progress: true
 
   # publish:
   #  needs: [ coverage, check ]
-  #  uses: bitpogo/workflows/.github/workflows/shared-publish-pull-request.yml@v1.0.0
+  #  uses: bitpogo/workflows/.github/workflows/shared-publish-snapshot.yml@v1.0.0
   #  with:
   #    uses-mips: true
   #  secrets:
@@ -84,5 +92,5 @@ jobs:
   #    maven-key: ${{ secrets.MAVEN_GPG_KEY }}
   #    maven-pass: ${{ secrets.MAVEN_GPG_PASS }}
   #  concurrency:
-  #    group: publish-${{ github.workflow }}-${{ github.head_ref }}
+  #    group: publish
   #    cancel-in-progress: true
