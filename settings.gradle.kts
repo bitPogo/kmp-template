@@ -33,7 +33,6 @@ plugins {
 }
 
 includeBuild("setup")
-includeBuild("gradlePlugin/template-dependency")
 
 include(
     ":kmp-lib",
