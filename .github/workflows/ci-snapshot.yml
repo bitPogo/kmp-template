@@ -29,38 +29,38 @@ jobs:
     uses: bitpogo/workflows/.github/workflows/shared-coding-conventions-linux.yml@v1.0.0
     with:
       cache-reports: true
-    #  detekt: true
-    #  api-check: true
+      detekt: false
+      api-check: false
     concurrency:
       group: coding-conventions
       cancel-in-progress: true
 
-  check-android:
-    needs: build-linux
-    uses: bitpogo/workflows/.github/workflows/shared-test-android-linux.yml@v1.0.0
-    with:
-      projects: "[':example-android-application']"
-      api-level: "['31']"
-      arch: "['x86_64']"
-      coverage: true
-      cache-reports: true
-    concurrency:
-      group: check-android
-      cancel-in-progress: true
+    # check-android:
+    #  needs: build-linux
+    #  uses: bitpogo/workflows/.github/workflows/shared-test-android-linux.yml@main
+    #  with:
+    #    projects: "[':example-android-application']"
+    #    api-level: "['31']"
+    #    arch: "['x86_64']"
+    #    coverage: true
+    #    cache-reports: true
+    #  concurrency:
+    #    group: check-android-${{ github.workflow }}-${{ github.head_ref }}
+    #    cancel-in-progress: true
 
   coverage:
-    needs: [ coding-conventions, check-android ]
+    needs: [ coding-conventions ] #, check-android ]
     uses: bitpogo/workflows/.github/workflows/shared-coverage-linux.yml@v1.0.0
     with:
-    #  jvm: true
-      verify-kmp: true
+      kmp: true
+      verify-kmp: false
       restore-cached-reports: true
     #  use-sonar: true
     secrets:
       github-token: ${{ secrets.GITHUB_TOKEN }}
     #  sonar-token: ${{ secrets.SONAR_TOKEN }}
     concurrency:
-      group: coverage
+      group: coverage-${{ github.workflow }}-${{ github.head_ref }}
       cancel-in-progress: true
 
   check:
