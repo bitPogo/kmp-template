@@ -8,7 +8,7 @@ kfixture =  "0.4.0-SNAPSHOT"
 ## [Test-Utils](https://github.com/bitPogo/test-utils-kmp)
 testUtils =  "f384302"
 ## [KMock](https://github.com/bitPogo/kmock)
-kmock = "0.3.0-rc04"
+kmock = "0.3.0-rc05"
 
 [libraries]
 kfixture = { module = "tech.antibytes.kfixture:core", version.ref = "kfixture" }

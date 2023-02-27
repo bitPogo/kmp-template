@@ -1,33 +1,36 @@
 /*
- * Copyright (c) 2022 Matthias Geisler (bitPogo) / All rights reserved.
+ * Copyright (c) 2023 Matthias Geisler (bitPogo) / All rights reserved.
  *
  * Use of this source code is governed by Apache v2.0
  */
 
 import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
-import tech.antibytes.gradle.configuration.sourcesets.nativeWithLegacy
 import tech.antibytes.gradle.configuration.sourcesets.setupAndroidTest
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
-import tech.antibytes.gradle.dependency.helper.nodePackage
+import tech.antibytes.gradle.configuration.sourcesets.nativeCoroutine
 
 plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
     alias(antibytesCatalog.plugins.gradle.antibytes.androidLibraryConfiguration)
     alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 
-    alias(antibytesCatalog.plugins.square.sqldelight)
-
     alias(libs.plugins.kmock)
 }
 
+val projectPackage = "tech.antibytes.lib"
+
 android {
-    namespace = "tech.antibytes.lib"
+    namespace = projectPackage
 
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
         }
     }
+}
+
+kmock {
+    rootPackage = projectPackage
 }
 
 kotlin {
@@ -56,7 +59,7 @@ kotlin {
         }
     }
 
-    nativeWithLegacy()
+    nativeCoroutine()
     ensureAppleDeviceCompatibility()
 
     sourceSets {
@@ -85,7 +88,6 @@ kotlin {
         val androidMain by getting {
             dependencies {
                 implementation(antibytesCatalog.jvm.kotlin.stdlib.jdk8)
-                implementation(antibytesCatalog.android.square.sqldelight.driver)
             }
         }
 
@@ -102,7 +104,6 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation(antibytesCatalog.jvm.kotlin.stdlib.jdk)
-                implementation(antibytesCatalog.jvm.square.sqldelight.driver)
             }
         }
         val jvmTest by getting {
@@ -116,10 +117,6 @@ kotlin {
             dependencies {
                 implementation(antibytesCatalog.js.kotlin.stdlib)
                 implementation(antibytesCatalog.js.kotlinx.nodeJs)
-                implementation(antibytesCatalog.js.square.sqldelight.driver)
-
-                nodePackage(antibytesCatalog.node.copyWebpackPlugin)
-                nodePackage(antibytesCatalog.node.sqlJs)
 
             }
         }
@@ -129,13 +126,6 @@ kotlin {
                 implementation(antibytesCatalog.js.test.kotlin.core)
             }
         }
-
-        /* val nativeMain by getting {
-            dependsOn(commonMain)
-            dependencies {
-                implementation(antibytesCatalog.common.square.sqldelight.driver.native)
-            }
-        }*/
     }
 }
 
