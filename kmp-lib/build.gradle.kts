@@ -1,23 +1,36 @@
 /*
- * Copyright (c) 2022 Matthias Geisler (bitPogo) / All rights reserved.
+ * Copyright (c) 2023 Matthias Geisler (bitPogo) / All rights reserved.
  *
  * Use of this source code is governed by Apache v2.0
  */
 
-import tech.antibytes.gradle.dependency.Dependency
-import tech.antibytes.gradle.configuration.isIdea
-import tech.antibytes.gradle.configuration.ensureIosDeviceCompatibility
-import tech.antibytes.gradle.project.dependency.Dependency as LocalDependency
+import tech.antibytes.gradle.configuration.apple.ensureAppleDeviceCompatibility
+import tech.antibytes.gradle.configuration.sourcesets.setupAndroidTest
 import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import tech.antibytes.gradle.configuration.sourcesets.nativeCoroutine
 
 plugins {
-    id("org.jetbrains.kotlin.multiplatform")
+    alias(antibytesCatalog.plugins.gradle.antibytes.kmpConfiguration)
+    alias(antibytesCatalog.plugins.gradle.antibytes.androidLibraryConfiguration)
+    alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 
-    // Android
-    id("com.android.library")
+    alias(libs.plugins.kmock)
+}
 
-    id("tech.antibytes.gradle.configuration")
-    id("tech.antibytes.gradle.coverage")
+val projectPackage = "tech.antibytes.lib"
+
+android {
+    namespace = projectPackage
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
+}
+
+kmock {
+    rootPackage = projectPackage
 }
 
 kotlin {
@@ -46,11 +59,8 @@ kotlin {
         }
     }
 
-    ios()
-    iosSimulatorArm64()
-    ensureIosDeviceCompatibility()
-
-    linuxX64()
+    nativeCoroutine()
+    ensureAppleDeviceCompatibility()
 
     sourceSets {
         all {
@@ -62,142 +72,59 @@ kotlin {
 
         val commonMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.common)
-                implementation(Dependency.multiplatform.coroutines.common)
+                implementation(antibytesCatalog.common.kotlin.stdlib)
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation(Dependency.multiplatform.test.common)
-                implementation(Dependency.multiplatform.test.annotations)
-
-                implementation(LocalDependency.antibytes.test.kmp.core)
-                implementation(LocalDependency.antibytes.test.kmp.annotations)
-                implementation(LocalDependency.antibytes.test.kmp.fixture)
-                implementation(LocalDependency.antibytes.test.kmp.coroutine)
+                implementation(antibytesCatalog.common.test.kotlin.core)
+                implementation(libs.testUtils.core)
+                implementation(libs.testUtils.annotations)
+                implementation(libs.kfixture)
+                implementation(libs.kmock)
             }
         }
 
         val androidMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.android)
-                implementation(Dependency.multiplatform.coroutines.android)
-                implementation(LocalDependency.sqldelight.android)
+                implementation(antibytesCatalog.jvm.kotlin.stdlib.jdk8)
             }
         }
-        if (!isIdea()) {
-            val androidAndroidTestRelease by getting
-            val androidAndroidTest by getting {
-                dependsOn(androidAndroidTestRelease)
-            }
-            val androidTestFixturesDebug by getting
-            val androidTestFixturesRelease by getting
 
-            val androidTestFixtures by getting {
-                dependsOn(androidTestFixturesDebug)
-                dependsOn(androidTestFixturesRelease)
-            }
-
-            val androidTest by getting {
-                dependsOn(androidTestFixtures)
-            }
-        }
+        setupAndroidTest()
         val androidTest by getting {
             dependencies {
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
-                implementation(Dependency.android.test.ktx)
-                implementation(Dependency.android.test.robolectric)
-                implementation(Dependency.android.test.junit)
+                implementation(antibytesCatalog.android.test.junit.core)
+                implementation(antibytesCatalog.jvm.test.kotlin.junit4)
+                implementation(antibytesCatalog.android.test.ktx)
+                implementation(antibytesCatalog.android.test.robolectric)
             }
         }
 
         val jvmMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.jdk8)
+                implementation(antibytesCatalog.jvm.kotlin.stdlib.jdk)
             }
         }
         val jvmTest by getting {
             dependencies {
-                dependsOn(commonTest)
-
-                implementation(Dependency.multiplatform.test.jvm)
-                implementation(Dependency.multiplatform.test.junit)
+                implementation(antibytesCatalog.jvm.test.kotlin.core)
+                implementation(antibytesCatalog.jvm.test.junit.junit4)
             }
         }
 
         val jsMain by getting {
             dependencies {
-                implementation(Dependency.multiplatform.kotlin.js)
-                implementation(Dependency.js.nodejs)
+                implementation(antibytesCatalog.js.kotlin.stdlib)
+                implementation(antibytesCatalog.js.kotlinx.nodeJs)
 
             }
         }
 
         val jsTest by getting {
             dependencies {
-                implementation(Dependency.multiplatform.test.js)
+                implementation(antibytesCatalog.js.test.kotlin.core)
             }
-        }
-
-        val nativeMain by creating {
-            dependsOn(commonMain)
-            dependencies {
-                implementation(LocalDependency.sqldelight.native)
-            }
-        }
-
-        val nativeTest by creating {
-            dependsOn(commonTest)
-        }
-
-        val darwinMain by creating {
-            dependsOn(nativeMain)
-        }
-
-        val darwinTest by creating {
-            dependsOn(nativeTest)
-        }
-
-        val otherMain by creating {
-            dependsOn(nativeMain)
-        }
-
-        val otherTest by creating {
-            dependsOn(nativeTest)
-        }
-
-        val linuxX64Main by getting {
-            dependsOn(otherMain)
-        }
-
-        val linuxX64Test by getting {
-            dependsOn(otherTest)
-        }
-
-        val iosMain by getting {
-            dependsOn(darwinMain)
-        }
-
-        val iosTest by getting {
-            dependsOn(darwinTest)
-        }
-
-        val iosSimulatorArm64Main by getting {
-            dependsOn(iosMain)
-        }
-        val iosSimulatorArm64Test by getting {
-            dependsOn(iosTest)
-        }
-    }
-}
-
-android {
-    namespace = "tech.antibytes.lib"
-
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
         }
     }
 }
