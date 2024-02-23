@@ -1,10 +1,10 @@
 package tech.antibytes.lib
 
+import kotlin.js.JsName
+import kotlin.test.Test
 import tech.antibytes.kmock.KMock
 import tech.antibytes.kmock.KMockExperimental
 import tech.antibytes.kmock.verification.verify
-import kotlin.js.JsName
-import kotlin.test.Test
 import tech.antibytes.util.test.mustBe
 
 @OptIn(KMockExperimental::class)
