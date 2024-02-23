@@ -13,20 +13,20 @@ concurrency:
 
 jobs:
   build-linux:
-    uses: bitpogo/workflows/.github/workflows/shared-build-linux.yml@v1.0.0
+    uses: bitpogo/workflows/.github/workflows/shared-build-linux.yml@main
     concurrency:
       group: build-linux-${{ github.workflow }}-${{ github.head_ref }}
       cancel-in-progress: true
 
   build-macos:
-    uses: bitpogo/workflows/.github/workflows/shared-build-macos.yml@v1.0.0
+    uses: bitpogo/workflows/.github/workflows/shared-build-macos.yml@main
     concurrency:
       group: build-macos
       cancel-in-progress: true
 
   coding-conventions:
     needs: build-linux
-    uses: bitpogo/workflows/.github/workflows/shared-coding-conventions-linux.yml@v1.0.0
+    uses: bitpogo/workflows/.github/workflows/shared-coding-conventions-linux.yml@main
     with:
       cache-reports: true
       detekt: false
@@ -50,7 +50,7 @@ jobs:
 
   coverage:
     needs: [ coding-conventions ] #, check-android ]
-    uses: bitpogo/workflows/.github/workflows/shared-coverage-linux.yml@v1.0.0
+    uses: bitpogo/workflows/.github/workflows/shared-coverage-linux.yml@main
     with:
       kmp: true
       verify-kmp: false
@@ -65,7 +65,7 @@ jobs:
 
   check:
     needs: [ build-macos, build-linux ]
-    uses: bitpogo/workflows/.github/workflows/shared-test-kmp.yml@v1.0.0
+    uses: bitpogo/workflows/.github/workflows/shared-test-kmp.yml@main
     with:
       platforms: "['ios', 'macos', 'tvos', 'watchos', 'linux-js', 'mingw']"
     concurrency:
@@ -74,7 +74,7 @@ jobs:
 
   # docs:
   #  needs: [ coverage, check ]
-  #  uses: bitpogo/workflows/.github/workflows/shared-mkdocs-snapshot.yml@v1.0.0
+  #  uses: bitpogo/workflows/.github/workflows/shared-mkdocs-snapshot.yml@main
   #  secrets:
   #    github-token: ${{ secrets.GITHUB_TOKEN }}
   #  concurrency:
@@ -83,7 +83,7 @@ jobs:
 
   # publish:
   #  needs: [ coverage, check ]
-  #  uses: bitpogo/workflows/.github/workflows/shared-publish-snapshot.yml@v1.0.0
+  #  uses: bitpogo/workflows/.github/workflows/shared-publish-snapshot.yml@main
   #  with:
   #    uses-mips: true
   #  secrets:
