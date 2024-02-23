@@ -1,3 +1,5 @@
+import org.gradle.kotlin.dsl.antibytesCatalog
+
 /*
  * Copyright (c) 2023 Matthias Geisler (bitPogo) / All rights reserved.
  *

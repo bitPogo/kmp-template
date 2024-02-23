@@ -10,7 +10,7 @@ plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.androidApplicationConfiguration)
     alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 
-    alias(libs.plugins.kmock)
+    alias(antibytesCatalog.plugins.kmock)
 }
 
 kmock {
@@ -28,10 +28,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-    }
-
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
 
     buildFeatures {
@@ -75,10 +71,10 @@ dependencies {
     implementation(antibytesCatalog.android.material.compose.core)
     implementation(antibytesCatalog.android.compose.foundation.core)
 
-    testImplementation(libs.testUtils.core)
-    testImplementation(libs.testUtils.coroutine)
-    testImplementation(libs.kfixture)
-    testImplementation(libs.kmock)
+    testImplementation(antibytesCatalog.testUtils.core)
+    testImplementation(antibytesCatalog.testUtils.coroutine)
+    testImplementation(antibytesCatalog.kfixture)
+    testImplementation(antibytesCatalog.kmock)
     testImplementation(antibytesCatalog.android.test.junit.core)
     testImplementation(antibytesCatalog.jvm.test.junit.junit4)
 
@@ -92,12 +88,7 @@ dependencies {
     androidTestImplementation(antibytesCatalog.android.test.espresso.core)
     androidTestImplementation(antibytesCatalog.android.test.uiAutomator)
 
-    androidTestImplementation(libs.testUtils.core)
-    androidTestImplementation(libs.kfixture)
-    androidTestImplementation(libs.kmock)
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    androidTestImplementation(antibytesCatalog.testUtils.core)
+    androidTestImplementation(antibytesCatalog.kfixture)
+    androidTestImplementation(antibytesCatalog.kmock)
 }

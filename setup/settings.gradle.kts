@@ -26,11 +26,3 @@ pluginManagement {
 plugins {
     id("tech.antibytes.gradle.dependency.settings") version "288f8da"
 }
-
-dependencyResolutionManagement {
-    versionCatalogs {
-        create("libs") {
-            from(files("../gradle/libs.versions.toml"))
-        }
-    }
-}

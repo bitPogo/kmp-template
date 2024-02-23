@@ -34,13 +34,50 @@ plugins {
 
 includeBuild("setup")
 
+dependencyResolutionManagement {
+    versionCatalogs {
+        getByName("antibytesCatalog") {
+            version("minSdk", "21")
+            version("kfixture", "0.4.0-SNAPSHOT")
+            version("testUtils", "b6c6e6c")
+            version("kmock", "0.3.0-rc08-SNAPSHOT")
+            version("kotlinx-coroutines-core", "1.7.1")
+            version("kotlinx-coroutines-test", "1.7.1")
+
+            library("kfixture", "tech.antibytes.kfixture", "core").versionRef("kfixture")
+            library("testUtils-core", "tech.antibytes.test-utils-kmp", "test-utils").versionRef("testUtils")
+            library(
+                "testUtils-annotations",
+                "tech.antibytes.test-utils-kmp",
+                "test-utils-annotations-junit4",
+            ).versionRef("testUtils")
+            library(
+                "testUtils-coroutine",
+                "tech.antibytes.test-utils-kmp",
+                "test-utils-coroutine",
+            ).versionRef("testUtils")
+            library(
+                "testUtils-coroutine",
+                "tech.antibytes.test-utils-kmp",
+                "test-utils-coroutine",
+            ).versionRef("testUtils")
+            library(
+                "kmock",
+                "tech.antibytes.kmock",
+                "kmock",
+            ).versionRef("kmock")
+            plugin("kmock", "tech.antibytes.kmock.kmock-gradle").versionRef("kmock")
+        }
+    }
+}
+
 include(
     ":kmp-lib",
     ":example-android-application"
 )
 
 buildCache {
-    fullCache(rootDir)
+    // fullCache(rootDir)
 }
 
 rootProject.name = "template-project"

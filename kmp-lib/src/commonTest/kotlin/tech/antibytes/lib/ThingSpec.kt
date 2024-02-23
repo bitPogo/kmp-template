@@ -2,8 +2,6 @@ package tech.antibytes.lib
 
 import tech.antibytes.kmock.KMock
 import tech.antibytes.kmock.KMockExperimental
-import tech.antibytes.kmock.verification.VerificationContext.hasBeenCalled
-import tech.antibytes.kmock.verification.assertProxy
 import tech.antibytes.kmock.verification.verify
 import kotlin.js.JsName
 import kotlin.test.Test
