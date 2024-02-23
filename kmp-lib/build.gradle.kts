@@ -29,18 +29,18 @@ android {
 }
 
 kotlin {
-    android()
+    androidTarget()
 
     jvm()
 
     js(IR) {
         compilations {
             this.forEach {
-                it.compileKotlinTask.kotlinOptions.sourceMap = true
-                it.compileKotlinTask.kotlinOptions.metaInfo = true
+                it.compileTaskProvider.get().kotlinOptions.sourceMap = true
+                it.compileTaskProvider.get().kotlinOptions.metaInfo = true
 
                 if (it.name == "main") {
-                    it.compileKotlinTask.kotlinOptions.main = "call"
+                    it.compileTaskProvider.get().kotlinOptions.main = "call"
                 }
             }
         }
