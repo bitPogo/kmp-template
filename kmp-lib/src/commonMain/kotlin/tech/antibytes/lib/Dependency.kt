@@ -4,6 +4,8 @@
  * Use of this source code is governed by Apache v2.0
  */
 
-package tech.antibytes.gradle.project.config.quality
+package tech.antibytes.lib
 
-val excludes = setOf<String>()
+interface Dependency {
+    fun doSomethingElse(): String
+}

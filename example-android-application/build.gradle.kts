@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Matthias Geisler (bitPogo) / All rights reserved.
+ * Copyright (c) 2024 Matthias Geisler (bitPogo) / All rights reserved.
  *
  * Use of this source code is governed by Apache v2.0
  */
@@ -10,7 +10,7 @@ plugins {
     alias(antibytesCatalog.plugins.gradle.antibytes.androidApplicationConfiguration)
     alias(antibytesCatalog.plugins.gradle.antibytes.coverage)
 
-    alias(libs.plugins.kmock)
+    alias(antibytesCatalog.plugins.kmock)
 }
 
 kmock {
@@ -30,10 +30,6 @@ android {
         }
     }
 
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-
     buildFeatures {
         compose = true
         viewBinding = true
@@ -43,7 +39,11 @@ android {
         kotlinCompilerExtensionVersion = antibytesCatalog.versions.android.compose.compiler.get()
     }
 
-    packagingOptions {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -75,10 +75,10 @@ dependencies {
     implementation(antibytesCatalog.android.material.compose.core)
     implementation(antibytesCatalog.android.compose.foundation.core)
 
-    testImplementation(libs.testUtils.core)
-    testImplementation(libs.testUtils.coroutine)
-    testImplementation(libs.kfixture)
-    testImplementation(libs.kmock)
+    testImplementation(antibytesCatalog.testUtils.core)
+    testImplementation(antibytesCatalog.testUtils.coroutine)
+    testImplementation(antibytesCatalog.kfixture)
+    testImplementation(antibytesCatalog.kmock)
     testImplementation(antibytesCatalog.android.test.junit.core)
     testImplementation(antibytesCatalog.jvm.test.junit.junit4)
 
@@ -92,12 +92,7 @@ dependencies {
     androidTestImplementation(antibytesCatalog.android.test.espresso.core)
     androidTestImplementation(antibytesCatalog.android.test.uiAutomator)
 
-    androidTestImplementation(libs.testUtils.core)
-    androidTestImplementation(libs.kfixture)
-    androidTestImplementation(libs.kmock)
-}
-
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    androidTestImplementation(antibytesCatalog.testUtils.core)
+    androidTestImplementation(antibytesCatalog.kfixture)
+    androidTestImplementation(antibytesCatalog.kmock)
 }
