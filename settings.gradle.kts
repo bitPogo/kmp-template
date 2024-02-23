@@ -1,3 +1,5 @@
+import tech.antibytes.gradle.dependency.settings.fullCache
+
 /*
  * Copyright (c) 2023 Matthias Geisler (bitPogo) / All rights reserved.
  *
@@ -73,10 +75,11 @@ dependencyResolutionManagement {
 include(
     ":kmp-lib",
     ":example-android-application",
+    // ":docs",
 )
 
 buildCache {
-    // fullCache(rootDir)
+    fullCache(rootDir)
 }
 
 rootProject.name = "template-project"
