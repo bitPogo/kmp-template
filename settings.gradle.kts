@@ -40,7 +40,7 @@ include(
 )
 
 buildCache {
-    localGithub()
+    fullCache(rootDir)
 }
 
 rootProject.name = "template-project"
