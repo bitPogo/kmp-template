@@ -29,10 +29,6 @@ android {
     }
 }
 
-kmock {
-    rootPackage = projectPackage
-}
-
 kotlin {
     android()
 
@@ -127,6 +123,10 @@ kotlin {
             }
         }
     }
+}
+
+kmock {
+    rootPackage = projectPackage
 }
 
 tasks.withType(Test::class.java) {
